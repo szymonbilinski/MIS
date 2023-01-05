@@ -10,6 +10,6 @@ def Window():
     sys.exit(app.exec_())
 
  
-
+print('tak')
 window = Window()
     
