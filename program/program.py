@@ -1,8 +1,8 @@
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow,QWidget, QLabel, QLineEdit, QHBoxLayout
+from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-
+from PyQt5.QtCore import *
 import sys
 
 class GetDataFromUserWindow(QWidget):
@@ -20,27 +20,23 @@ class EnterDataWindow(QMainWindow):
         self.initData()
 
     def initData(self):
-    
         self.MainTitleLabel = QtWidgets.QLabel(self)
         self.MainTitleLabel.setText("Wprowadz dane")
         self.MainTitleLabel.setFont(QFont('Arial', 16))
         self.MainTitleLabel.move(350,20)
         self.MainTitleLabel.adjustSize()
 
-        # ukladH4=QHBoxLayout
-        # self.labelR = QLabel('R')
-        # self.labelG = QLabel('G')
-        # self.labelB = QLabel('B')
-        # self.kolorR = QLineEdit('0')
-        # self.kolorG = QLineEdit('0')
-        # self.kolorB = QLineEdit('0')
-        # for v in ('R', 'G', 'B'):
-        #     label = getattr(self, 'label' + v)
-        #     kolor = getattr(self, 'kolor' + v)
-        #     ukladH4.addWidget(label)
-        #     ukladH4.addWidget(kolor)
-        #     kolor.setMaxLength(3)
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 80)
+        self.textbox.resize(200,40)
     
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 180)
+        self.textbox.resize(200,40)
+    
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 280)
+        self.textbox.resize(200,40)
 
         self.Capacity = QtWidgets.QLabel(self)
         self.Capacity.setText("Pojemność pojazdów")
@@ -60,11 +56,6 @@ class EnterDataWindow(QMainWindow):
         self.Time.move(250,300)
         self.Time.adjustSize()
 
-        self.continue_enterData_button = QtWidgets.QPushButton(self)
-        self.continue_enterData_button.setText("Kontynuuj")
-        self.continue_enterData_button.move(800,0)
-        self.continue_enterData_button.clicked.connect(self.continue_enterData_button_clicked)
-
         self.go_back_button = QtWidgets.QPushButton(self)
         self.go_back_button.setText("Wstecz")
         self.go_back_button.move(0,0)
@@ -76,12 +67,134 @@ class EnterDataWindow(QMainWindow):
         self.add_client_button.setGeometry(330,390,230,100)
         #self.add_client_button.move(370,400)
         self.add_client_button.clicked.connect(self.add_client_button_clicked)
-    def continue_enterData_button_clicked(self):
-        self.go_back_button.setEnabled(False)
     def go_back_button_clicked(self):
-        self.continue_enterData_button.setEnabled(False)
+        self.close()
     def add_client_button_clicked(self):
-        self.add_client_button.setEnabled(False)
+        #self.add_client_button.setEnabled(False)
+        self.w2=EnterClientWindow()
+        self.w2.show()
+
+class EnterClientWindow(QMainWindow):
+    def __init__(self):
+        super(EnterClientWindow,self).__init__()
+        self.setGeometry(200,200,900,500)
+        self.setWindowTitle("Dodaj klienta")
+        self.initClient()
+
+    def initClient(self):
+        self.MainTitleLabel = QtWidgets.QLabel(self)
+        self.MainTitleLabel.setText("Wprowadz dane węzła")
+        self.MainTitleLabel.setFont(QFont('Arial', 16))
+        self.MainTitleLabel.move(350,20)
+        self.MainTitleLabel.adjustSize()
+
+        self.go_back_button = QtWidgets.QPushButton(self)
+        self.go_back_button.setText("Wstecz")
+        self.go_back_button.move(0,0)
+        self.go_back_button.clicked.connect(self.go_back_button_clicked)
+
+        self.continue_enterData_button = QtWidgets.QPushButton(self)
+        self.continue_enterData_button.setText("Kontynuuj")
+        self.continue_enterData_button.move(800,0)
+        self.continue_enterData_button.clicked.connect(self.continue_enterData_button_clicked)
+
+        self.Capacity = QtWidgets.QLabel(self)
+        self.Capacity.setText("Zapotrzebowanie")
+        self.Capacity.setFont(QFont('Arial', 13))
+        self.Capacity.move(250,70)
+        self.Capacity.adjustSize()
+        
+        self.Availability = QtWidgets.QLabel(self)
+        self.Availability.setText("Czas obsługi")
+        self.Availability.setFont(QFont('Arial', 13))
+        self.Availability.move(250,130)
+        self.Availability.adjustSize()
+
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 60)
+        self.textbox.resize(200,40)
+    
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 120)
+        self.textbox.resize(200,40)
+
+        self.Capacity = QtWidgets.QLabel(self)
+        self.Capacity.setText("Okno czasowe")
+        self.Capacity.setFont(QFont('Arial', 13))
+        self.Capacity.move(250,200)
+        self.Capacity.adjustSize()
+        
+        self.Availability = QtWidgets.QLabel(self)
+        self.Availability.setText("Koordynaty")
+        self.Availability.setFont(QFont('Arial', 13))
+        self.Availability.move(250,270)
+        self.Availability.adjustSize()
+
+        self.Capacity = QtWidgets.QLabel(self)
+        self.Capacity.setText("Poprzednik AND")
+        self.Capacity.setFont(QFont('Arial', 13))
+        self.Capacity.move(250,340)
+        self.Capacity.adjustSize()
+        
+        self.Availability = QtWidgets.QLabel(self)
+        self.Availability.setText("Poprzednik OR")
+        self.Availability.setFont(QFont('Arial', 13))
+        self.Availability.move(250,410)
+        self.Availability.adjustSize()
+
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 330)
+        self.textbox.resize(200,40)
+    
+        self.textbox = QLineEdit(self)
+        self.textbox.move(500, 400)
+        self.textbox.resize(200,40)
+
+        self.Capacity = QtWidgets.QLabel(self)
+        self.Capacity.setText("Min:")
+        self.Capacity.setFont(QFont('Arial', 13))
+        self.Capacity.move(500,200)
+        self.Capacity.adjustSize()
+        
+        self.Availability = QtWidgets.QLabel(self)
+        self.Availability.setText("Max:")
+        self.Availability.setFont(QFont('Arial', 13))
+        self.Availability.move(600,200)
+        self.Availability.adjustSize()
+
+        self.textbox = QLineEdit(self)
+        self.textbox.move(550, 195)
+        self.textbox.resize(40,30)
+    
+        self.textbox = QLineEdit(self)
+        self.textbox.move(650, 195)
+        self.textbox.resize(40,30)
+
+        self.Capacity = QtWidgets.QLabel(self)
+        self.Capacity.setText("X:")
+        self.Capacity.setFont(QFont('Arial', 13))
+        self.Capacity.move(500,270)
+        self.Capacity.adjustSize()
+        
+        self.Availability = QtWidgets.QLabel(self)
+        self.Availability.setText("Y:")
+        self.Availability.setFont(QFont('Arial', 13))
+        self.Availability.move(600,270)
+        self.Availability.adjustSize()
+
+        self.textbox = QLineEdit(self)
+        self.textbox.move(550, 260)
+        self.textbox.resize(40,30)
+    
+        self.textbox = QLineEdit(self)
+        self.textbox.move(650, 260)
+        self.textbox.resize(40,30)
+    def go_back_button_clicked(self):
+        #self.continue_enterData_button.setEnabled(False)
+        self.close()
+    def continue_enterData_button_clicked(self):
+        #self.go_back_button.setEnabled(False)
+        self.close()
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
