@@ -5,6 +5,15 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
 
+Zapotrzebowanie=[]
+Czas_Obsługi=[]
+Okno_czasowe_min=[]
+Okno_czasowe_max=[]
+Koordynaty_x=[]
+Koordynaty_y=[]
+Poprzednik_And=[]
+Poprzednik_Or=[]
+
 class GetDataFromUserWindow(QWidget):
     def __init__(self):
         super(GetDataFromUserWindow,self).__init__()
@@ -30,13 +39,13 @@ class EnterDataWindow(QMainWindow):
         self.textbox.move(500, 80)
         self.textbox.resize(200,40)
     
-        self.textbox = QLineEdit(self)
-        self.textbox.move(500, 180)
-        self.textbox.resize(200,40)
+        self.textbox1 = QLineEdit(self)
+        self.textbox1.move(500, 180)
+        self.textbox1.resize(200,40)
     
-        self.textbox = QLineEdit(self)
-        self.textbox.move(500, 280)
-        self.textbox.resize(200,40)
+        self.textbox2 = QLineEdit(self)
+        self.textbox2.move(500, 280)
+        self.textbox2.resize(200,40)
 
         self.Capacity = QtWidgets.QLabel(self)
         self.Capacity.setText("Pojemność pojazdów")
@@ -71,6 +80,10 @@ class EnterDataWindow(QMainWindow):
         self.close()
     def add_client_button_clicked(self):
         #self.add_client_button.setEnabled(False)
+        capacity=self.textbox.text()
+        available=self.textbox1.text()
+        time=self.textbox2.text()
+        print(capacity, available, time)
         self.w2=EnterClientWindow()
         self.w2.show()
 
@@ -110,13 +123,13 @@ class EnterClientWindow(QMainWindow):
         self.Availability.move(250,130)
         self.Availability.adjustSize()
 
-        self.textbox = QLineEdit(self)
-        self.textbox.move(500, 60)
-        self.textbox.resize(200,40)
+        self.textboxZ = QLineEdit(self)
+        self.textboxZ.move(500, 60)
+        self.textboxZ.resize(200,40)
     
-        self.textbox = QLineEdit(self)
-        self.textbox.move(500, 120)
-        self.textbox.resize(200,40)
+        self.textboxC = QLineEdit(self)
+        self.textboxC.move(500, 120)
+        self.textboxC.resize(200,40)
 
         self.Capacity = QtWidgets.QLabel(self)
         self.Capacity.setText("Okno czasowe")
@@ -130,70 +143,79 @@ class EnterClientWindow(QMainWindow):
         self.Availability.move(250,270)
         self.Availability.adjustSize()
 
-        self.Capacity = QtWidgets.QLabel(self)
-        self.Capacity.setText("Poprzednik AND")
-        self.Capacity.setFont(QFont('Arial', 13))
-        self.Capacity.move(250,340)
-        self.Capacity.adjustSize()
+        self.And = QtWidgets.QLabel(self)
+        self.And.setText("Poprzednik AND")
+        self.And.setFont(QFont('Arial', 13))
+        self.And.move(250,340)
+        self.And.adjustSize()
         
-        self.Availability = QtWidgets.QLabel(self)
-        self.Availability.setText("Poprzednik OR")
-        self.Availability.setFont(QFont('Arial', 13))
-        self.Availability.move(250,410)
-        self.Availability.adjustSize()
+        self.Or = QtWidgets.QLabel(self)
+        self.Or.setText("Poprzednik OR")
+        self.Or.setFont(QFont('Arial', 13))
+        self.Or.move(250,410)
+        self.Or.adjustSize()
 
-        self.textbox = QLineEdit(self)
-        self.textbox.move(500, 330)
-        self.textbox.resize(200,40)
+        self.textboxA = QLineEdit(self)
+        self.textboxA.move(500, 330)
+        self.textboxA.resize(200,40)
     
-        self.textbox = QLineEdit(self)
-        self.textbox.move(500, 400)
-        self.textbox.resize(200,40)
+        self.textboxO = QLineEdit(self)
+        self.textboxO.move(500, 400)
+        self.textboxO.resize(200,40)
 
-        self.Capacity = QtWidgets.QLabel(self)
-        self.Capacity.setText("Min:")
-        self.Capacity.setFont(QFont('Arial', 13))
-        self.Capacity.move(500,200)
-        self.Capacity.adjustSize()
+        self.Min = QtWidgets.QLabel(self)
+        self.Min.setText("Min:")
+        self.Min.setFont(QFont('Arial', 13))
+        self.Min.move(500,200)
+        self.Min.adjustSize()
         
-        self.Availability = QtWidgets.QLabel(self)
-        self.Availability.setText("Max:")
-        self.Availability.setFont(QFont('Arial', 13))
-        self.Availability.move(600,200)
-        self.Availability.adjustSize()
+        self.Max = QtWidgets.QLabel(self)
+        self.Max.setText("Max:")
+        self.Max.setFont(QFont('Arial', 13))
+        self.Max.move(600,200)
+        self.Max.adjustSize()
 
-        self.textbox = QLineEdit(self)
-        self.textbox.move(550, 195)
-        self.textbox.resize(40,30)
+        self.textboxMa = QLineEdit(self)
+        self.textboxMa.move(550, 195)
+        self.textboxMa.resize(40,30)
     
-        self.textbox = QLineEdit(self)
-        self.textbox.move(650, 195)
-        self.textbox.resize(40,30)
+        self.textboxMin = QLineEdit(self)
+        self.textboxMin.move(650, 195)
+        self.textboxMin.resize(40,30)
 
-        self.Capacity = QtWidgets.QLabel(self)
-        self.Capacity.setText("X:")
-        self.Capacity.setFont(QFont('Arial', 13))
-        self.Capacity.move(500,270)
-        self.Capacity.adjustSize()
+        self.X = QtWidgets.QLabel(self)
+        self.X.setText("X:")
+        self.X.setFont(QFont('Arial', 13))
+        self.X.move(500,270)
+        self.X.adjustSize()
         
-        self.Availability = QtWidgets.QLabel(self)
-        self.Availability.setText("Y:")
-        self.Availability.setFont(QFont('Arial', 13))
-        self.Availability.move(600,270)
-        self.Availability.adjustSize()
+        self.Y = QtWidgets.QLabel(self)
+        self.Y.setText("Y:")
+        self.Y.setFont(QFont('Arial', 13))
+        self.Y.move(600,270)
+        self.Y.adjustSize()
 
-        self.textbox = QLineEdit(self)
-        self.textbox.move(550, 260)
-        self.textbox.resize(40,30)
+        self.textboxX = QLineEdit(self)
+        self.textboxX.move(550, 260)
+        self.textboxX.resize(40,30)
     
-        self.textbox = QLineEdit(self)
-        self.textbox.move(650, 260)
-        self.textbox.resize(40,30)
+        self.textboxY = QLineEdit(self)
+        self.textboxY.move(650, 260)
+        self.textboxY.resize(40,30)
     def go_back_button_clicked(self):
         #self.continue_enterData_button.setEnabled(False)
         self.close()
     def continue_enterData_button_clicked(self):
         #self.go_back_button.setEnabled(False)
+        Zapotrzebowanie.append(self.textboxZ.text())
+        Czas_Obsługi.append(self.textboxC.text())
+        Okno_czasowe_min.append(self.textboxMin.text())
+        Okno_czasowe_max.append(self.textboxMa.text())
+        Koordynaty_x.append(self.textboxX.text())
+        Koordynaty_y.append(self.textboxY.text())
+        Poprzednik_And.append(self.textboxA.text())
+        Poprzednik_Or.append(self.textboxO.text())
+        print(Zapotrzebowanie, Czas_Obsługi, Okno_czasowe_min, Okno_czasowe_max, Koordynaty_x, Koordynaty_y, Poprzednik_And, Poprzednik_Or)
         self.close()
 class MainWindow(QMainWindow):
     def __init__(self):
