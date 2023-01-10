@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+import pandas as pd
 import sys
 from initsolution import initsolution
 
@@ -40,7 +41,38 @@ class GetDataFromUserWindow(QWidget):
         self.setGeometry(200,200,900,500)
         self.setWindowTitle("Enter Data")
         
+class GetDataFromExcell(QWidget):
+    def __init__(self):
+        super(GetDataFromExcell,self).__init__()
+        self.setGeometry(200,200,900,500)
+        self.setWindowTitle("Get Data From Excell")
+        self.gData()
 
+    def gData(self):
+        wb=pd.read_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/dane.xlsx')
+        Capacity=(wb[0:1][['Capacity']])
+        Available=(wb[0:1][['Available']])
+        Time=(wb[0:1][['Time']])
+        Czas_Obsługi=wb['Czas Obslugi']
+        Okno_czasowe_min=wb['Okno czasowe min']
+        Okno_czasowe_max=wb['Okno czasowe max']
+        Koordynaty_x=wb['Koordynaty x']
+        Koordynaty_y=wb['Koordynaty y']
+        Poprzednik_And=wb['Poprzednik AND']
+        Poprzednik_Or=wb['Poprzednik OR']
+        print(Capacity)
+        print(Available)
+        print(Time)
+        print(Czas_Obsługi)
+        print(Okno_czasowe_min)
+        print(Okno_czasowe_max)
+        print(Koordynaty_x)
+        print(Koordynaty_y)
+        print(Poprzednik_And)
+        print(Poprzednik_Or)
+        #print(Capacity)
+        #print(Available)
+        #print(Time)
 class EnterDataWindow(QMainWindow):
     def __init__(self):
         super(EnterDataWindow,self).__init__()
