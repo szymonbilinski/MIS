@@ -4,15 +4,35 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import sys
+from initsolution import initsolution
 
-Zapotrzebowanie=[]
-Czas_Obsługi=[]
-Okno_czasowe_min=[]
-Okno_czasowe_max=[]
-Koordynaty_x=[]
-Koordynaty_y=[]
-Poprzednik_And=[]
-Poprzednik_Or=[]
+
+
+# capacity=None
+# available=None
+# time=None
+
+class costam():
+    def __init__(self,capacity,available,time):
+        self.capacity=capacity
+        self.available=available
+        self.time=time
+
+class Node():
+    def __init__(self,zapotrzebowanie,czas_obslugi,okno_czasowe_min,okno_czasowe_max,koordynat_x,koordynat_y,ANDpre,ORpre,nazwa_wezla=""):
+        self.nazwa_wezla=nazwa_wezla
+        self.zapotrzebowanie = zapotrzebowanie
+        self.czas_obslugi = czas_obslugi
+        self.okno_czasowe_min = okno_czasowe_min
+        self.okno_czasowe_max = okno_czasowe_max
+        self.koordynat_x = koordynat_x
+        self.koordynat_y = koordynat_y
+        self.ANDpre = ANDpre
+        self.ORpre = ORpre
+
+
+wezly = []
+blabla = []
 
 class GetDataFromUserWindow(QWidget):
     def __init__(self):
@@ -70,20 +90,35 @@ class EnterDataWindow(QMainWindow):
         self.go_back_button.move(0,0)
         self.go_back_button.clicked.connect(self.go_back_button_clicked)
 
+        self.save_button = QtWidgets.QPushButton(self)
+        self.save_button.setText("zapisz")
+        self.save_button.move(800,0)
+        self.save_button.clicked.connect(self.save_button_button_clicked)
+
         self.add_client_button = QtWidgets.QPushButton(self)
         self.add_client_button.setText("Dodaj klienta")
         self.add_client_button.setFont(QFont('Arial', 16))
         self.add_client_button.setGeometry(330,390,230,100)
         #self.add_client_button.move(370,400)
         self.add_client_button.clicked.connect(self.add_client_button_clicked)
+
     def go_back_button_clicked(self):
         self.close()
+
+    def save_button_button_clicked(self):
+        # capacity=int(self.textbox.text())
+        # available=int(self.textbox1.text())
+        # time=int(self.textbox2.text())
+        blabla.append(int(self.textbox.text()))
+        blabla.append(int(self.textbox1.text()))
+        blabla.append(int(self.textbox2.text()))
+        #print(capacity, available, time)
+
+
     def add_client_button_clicked(self):
         #self.add_client_button.setEnabled(False)
-        capacity=self.textbox.text()
-        available=self.textbox1.text()
-        time=self.textbox2.text()
-        print(capacity, available, time)
+        
+        
         self.w2=EnterClientWindow()
         self.w2.show()
 
@@ -207,15 +242,17 @@ class EnterClientWindow(QMainWindow):
         self.close()
     def continue_enterData_button_clicked(self):
         #self.go_back_button.setEnabled(False)
-        Zapotrzebowanie.append(self.textboxZ.text())
-        Czas_Obsługi.append(self.textboxC.text())
-        Okno_czasowe_min.append(self.textboxMin.text())
-        Okno_czasowe_max.append(self.textboxMa.text())
-        Koordynaty_x.append(self.textboxX.text())
-        Koordynaty_y.append(self.textboxY.text())
-        Poprzednik_And.append(self.textboxA.text())
-        Poprzednik_Or.append(self.textboxO.text())
-        print(Zapotrzebowanie, Czas_Obsługi, Okno_czasowe_min, Okno_czasowe_max, Koordynaty_x, Koordynaty_y, Poprzednik_And, Poprzednik_Or)
+        wezly.append(Node(int(self.textboxZ.text()),int(self.textboxC.text()),int(self.textboxMin.text()),int(self.textboxMa.text()),int(self.textboxX.text()),int(self.textboxY.text()),self.textboxA.text(),self.textboxO.text()))
+        print(wezly[0].zapotrzebowanie)
+        #Zapotrzebowanie.append(self.textboxZ.text())
+        #Czas_Obsługi.append(self.textboxC.text())
+        #Okno_czasowe_min.append(self.textboxMin.text())
+        #Okno_czasowe_max.append(self.textboxMa.text())
+        #Koordynaty_x.append(self.textboxX.text())
+        #Koordynaty_y.append(self.textboxY.text())
+        #Poprzednik_And.append(self.textboxA.text())
+        #Poprzednik_Or.append(self.textboxO.text())
+        print(wezly)
         self.close()
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -257,7 +294,8 @@ class MainWindow(QMainWindow):
         self.export_data_to_csv.clicked.connect(self.export_data_to_csv_button_clicked)
 
     def start_simulation_button_clicked(self):
-        self.start_simulation_button.setEnabled(False)
+        #self.start_simulation_button.setEnabled(False)
+        initsolution(wezly,blabla)
 
     def get_data_from_user_button_clicked(self):
         self.w1=EnterDataWindow()
@@ -267,6 +305,7 @@ class MainWindow(QMainWindow):
         #self.get_data_from_user.setEnabled(False)
 
     def read_data_from_csv_button_clicked(self):
+        print(blabla[0],blabla[1],blabla[2])
         self.read_data_from_csv.setEnabled(False)
 
     def show_graphs_and_values_button_clicked(self):
