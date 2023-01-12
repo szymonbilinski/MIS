@@ -5,7 +5,11 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 import pandas as pd
 import sys
+from pyqtgraph import PlotWidget,plot
+import pyqtgraph as pg
 from initsolution import initsolution
+import time
+from random import randint
 
 
 
@@ -34,6 +38,7 @@ class Node():
 
 wezly = []
 blabla = []
+routes =[]
 
 class GetDataFromUserWindow(QWidget):
     def __init__(self):
@@ -286,6 +291,44 @@ class EnterClientWindow(QMainWindow):
         #Poprzednik_Or.append(self.textboxO.text())
         print(wezly)
         self.close()
+
+class nodes_table(QMainWindow):
+    def __init__(self):
+        super(nodes_table,self).__init__
+        #wyswietlanie tabeli
+
+class ShowGraph(QMainWindow):
+    def __init__(self):
+        super(ShowGraph,self).__init__()
+        self.setGeometry(200,200,900,500)
+        self.setWindowTitle("Metody Inzynierii Systemow")
+        self.showgraphwindow()
+
+    def showgraphwindow(self):
+        self.graphWidget = pg.PlotWidget()
+        self.setCentralWidget(self.graphWidget)
+        rutes=[]
+        rutes=routes[0]
+        #self.graphWidget.setBackground('w')
+
+        for i in range(len(rutes)):
+            zmienna_x=[]
+            zmienna_y=[]
+            zmienna_x.append(0)
+            zmienna_y.append(0)
+            #time.sleep(3)
+            for j in range(len(rutes[i])):
+                zmienna_x.append(rutes[i][j].koordynat_x)
+                zmienna_y.append(rutes[i][j].koordynat_y)
+
+            zmienna_x.append(0)
+            zmienna_y.append(0)
+            temp_col=randint(5,200)
+            pen = pg.mkPen(color=(temp_col, 0, 0))
+            self.graphWidget.plot(zmienna_x,zmienna_y,pen=pen,symbol='+')
+        # print("rzeczy ",routes[0].koordynat_x,routes[0].koordynat_y)
+        print(rutes)
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow,self).__init__()
@@ -297,7 +340,7 @@ class MainWindow(QMainWindow):
         self.MainTitleLabel = QtWidgets.QLabel(self)
         self.MainTitleLabel.setText("A hybrid algorithm for the CRP with AND/OR Precedence Constraints and time windows")
         self.MainTitleLabel.setFont(QFont('Arial', 13))
-        self.MainTitleLabel.move(30,100)
+        self.MainTitleLabel.move(130,100)
         self.MainTitleLabel.adjustSize()
 
         self.start_simulation_button = QtWidgets.QPushButton(self)
@@ -327,7 +370,9 @@ class MainWindow(QMainWindow):
 
     def start_simulation_button_clicked(self):
         #self.start_simulation_button.setEnabled(False)
-        initsolution(wezly,blabla)
+        routes.append(initsolution(wezly,blabla))
+        
+        print(routes[0])
 
     def get_data_from_user_button_clicked(self):
         self.w1=EnterDataWindow()
@@ -341,7 +386,9 @@ class MainWindow(QMainWindow):
         self.read_data_from_csv.setEnabled(False)
 
     def show_graphs_and_values_button_clicked(self):
-        self.show_graphs_and_values.setEnabled(False)
+        #self.show_graphs_and_values.setEnabled(False)
+        self.w1=ShowGraph()
+        self.w1.show()
 
     def export_data_to_csv_button_clicked(self):
         self.export_data_to_csv.setEnabled(False)

@@ -95,5 +95,5 @@ def initsolution(wezly,blabla):
     
 
     #print(AllPRE)   
-
+    return(route)
 #initsolution()
