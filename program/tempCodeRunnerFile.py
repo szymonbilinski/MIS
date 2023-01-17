@@ -1,2 +1,2 @@
 
-        self.setGeometry(200,200,900,500)
+            # Okno_czasowe_min.append(wb.at[x,'Okno czasowe min'])

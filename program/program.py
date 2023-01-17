@@ -46,6 +46,57 @@ class GetDataFromUserWindow(QWidget):
         self.setGeometry(200,200,900,500)
         self.setWindowTitle("Enter Data")
         
+class ExportDataToExcell(QWidget):
+    def __init__(self):
+        super(ExportDataToExcell,self).__init__()
+        self.setGeometry(200,200,900,500)
+        self.setWindowTitle("Export Data to Excell")
+        self.ExpData()
+    def ExpData(self):
+        self.tekst = QtWidgets.QLabel(self)
+        self.tekst.setText("Dane zostały poprawnie wyeksportowane")
+        self.tekst.setFont(QFont('Arial', 13))
+        self.tekst.move(300,100)
+        self.tekst.adjustSize()
+        #for i in range(len(route)):
+        #for j in range(len(route[i])):
+        #    print(route[i][j].nazwa_wezla)
+
+        
+        capacity=blabla[0]
+        available=blabla[1]
+        time=blabla[2]
+        print(capacity, available, time)
+        #df=pd.DataFrame(blabla)
+        #dd=pd.DataFrame(wezly)
+        #print(df)
+        #print(dd)
+        #dd.to_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/exportowane.xlsx', sheet_name='Dane klientów')
+        #df.to_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/exportowane.xlsx', sheet_name='Dane Pojazdów')
+        Zapotrzebowanie=[]
+        Czas_Obsługi=[]
+        Okno_czasowe_min=[]
+        Okno_czasowe_max=[]
+        Koordynaty_x=[]
+        Koordynaty_y=[]
+        Poprzednik_And=[]
+        Poprzednik_Or=[]
+        for i in range(len(wezly)):
+            Zapotrzebowanie.append(wezly[i].zapotrzebowanie)
+            Czas_Obsługi.append(wezly[i].czas_obslugi)
+            Okno_czasowe_min.append(wezly[i].okno_czasowe_min)
+            Okno_czasowe_max.append(wezly[i].okno_czasowe_max)
+            Koordynaty_x.append(wezly[i].koordynat_x)
+            Koordynaty_y.append(wezly[i].koordynat_y)
+            Poprzednik_And.append(wezly[i].ANDpre)
+            Poprzednik_Or.append(wezly[i].ORpre)
+        #print(Zapotrzebowanie, Czas_Obsługi, Okno_czasowe_min, Okno_czasowe_max, Koordynaty_x, Koordynaty_y, Poprzednik_And, Poprzednik_Or)
+
+        slownik={'Capacity':[capacity],'Available':[available],'Time':[time],'Zapotrzebowanie':[Zapotrzebowanie],'Czas Obslugi':[Czas_Obsługi],'Okno czasowe min':[Okno_czasowe_min],'Okno czasowe max':[Okno_czasowe_max],'Koordynaty x':[Koordynaty_x],'Koordynaty y':[Koordynaty_y],'Poprzednik AND':[Poprzednik_And],'Poprzednik OR':[Poprzednik_Or]}
+        df=pd.DataFrame(slownik)
+        df.to_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/exportowane.xlsx', sheet_name='Dane eksportowane')
+        
+
 class GetDataFromExcell(QWidget):
     def __init__(self):
         super(GetDataFromExcell,self).__init__()
@@ -54,30 +105,45 @@ class GetDataFromExcell(QWidget):
         self.gData()
 
     def gData(self):
+        self.tekst = QtWidgets.QLabel(self)
+        self.tekst.setText("Dane zostały wczytane poprawnie")
+        self.tekst.setFont(QFont('Arial', 13))
+        self.tekst.move(300,100)
+        self.tekst.adjustSize()
         wb=pd.read_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/dane.xlsx')
-        Capacity=(wb[0:1][['Capacity']])
-        Available=(wb[0:1][['Available']])
-        Time=(wb[0:1][['Time']])
-        Czas_Obsługi=wb['Czas Obslugi']
-        Okno_czasowe_min=wb['Okno czasowe min']
-        Okno_czasowe_max=wb['Okno czasowe max']
-        Koordynaty_x=wb['Koordynaty x']
-        Koordynaty_y=wb['Koordynaty y']
-        Poprzednik_And=wb['Poprzednik AND']
-        Poprzednik_Or=wb['Poprzednik OR']
-        print(Capacity)
-        print(Available)
-        print(Time)
-        print(Czas_Obsługi)
-        print(Okno_czasowe_min)
-        print(Okno_czasowe_max)
-        print(Koordynaty_x)
-        print(Koordynaty_y)
-        print(Poprzednik_And)
-        print(Poprzednik_Or)
-        #print(Capacity)
-        #print(Available)
-        #print(Time)
+
+        Capacity=int(wb.at[0,'Capacity'])
+        Available=int(wb.at[0,'Available'])
+        Time=int(wb.at[0,'Time'])
+        #self.obiekt=costam(Capacity, Available, Time)
+        blabla.clear()
+        blabla.append(Capacity)
+        blabla.append(Available)
+        blabla.append(Time)
+        print(blabla)
+
+        zmienna=wb['Zapotrzebowanie']
+        licznik=zmienna.size
+        wezly.clear()
+        for x in range(licznik):
+            # Zapotrzebowanie.append(wb.at[x,'Zapotrzebowanie'])     
+            # Czas_Obsługi.append(wb.at[x,'Czas Obslugi'])
+            # Okno_czasowe_min.append(wb.at[x,'Okno czasowe min'])
+            # Okno_czasowe_max.append(wb.at[x,'Okno czasowe max'])
+            # Koordynaty_x.append(wb.at[x,'Koordynaty x'])
+            # Koordynaty_y.append(wb.at[x,'Koordynaty y'])
+            # Poprzednik_And.append(wb.at[x,'Poprzednik AND'])
+            
+            # Poprzednik_Or.append(wb.at[x,'Poprzednik OR'])
+            wezly.append(Node(int(wb.at[x,'Zapotrzebowanie']),int(wb.at[x,'Czas Obslugi']),int(wb.at[x,'Okno czasowe min']),int(wb.at[x,'Okno czasowe max']),int(wb.at[x,'Koordynaty x']),int(wb.at[x,'Koordynaty y']),str(wb.at[x,'Poprzednik AND']),str(wb.at[x,'Poprzednik OR'])))
+            if wezly[x].ANDpre =="nan":
+                wezly[x].ANDpre=""
+            if wezly[x].ORpre=="nan":
+                wezly[x].ORpre=""
+
+            #self.obiekt1=Node(Zapotrzebowanie,Czas_Obsługi,Okno_czasowe_min,Okno_czasowe_max,Koordynaty_x,Koordynaty_y, Poprzednik_And, Poprzednik_Or )
+        print(wezly[0].ANDpre)
+    
 class EnterDataWindow(QMainWindow):
     def __init__(self):
         super(EnterDataWindow,self).__init__()
@@ -280,7 +346,7 @@ class EnterClientWindow(QMainWindow):
     def continue_enterData_button_clicked(self):
         #self.go_back_button.setEnabled(False)
         wezly.append(Node(int(self.textboxZ.text()),int(self.textboxC.text()),int(self.textboxMin.text()),int(self.textboxMa.text()),int(self.textboxX.text()),int(self.textboxY.text()),self.textboxA.text(),self.textboxO.text()))
-        print(wezly[0].zapotrzebowanie)
+        print(wezly[0].ANDpre)
         #Zapotrzebowanie.append(self.textboxZ.text())
         #Czas_Obsługi.append(self.textboxC.text())
         #Okno_czasowe_min.append(self.textboxMin.text())
@@ -320,11 +386,14 @@ class ShowGraph(QMainWindow):
             for j in range(len(rutes[i])):
                 zmienna_x.append(rutes[i][j].koordynat_x)
                 zmienna_y.append(rutes[i][j].koordynat_y)
+                print(rutes[i][j].nazwa_wezla)
 
             zmienna_x.append(0)
             zmienna_y.append(0)
-            temp_col=randint(5,200)
-            pen = pg.mkPen(color=(temp_col, 0, 0))
+            temp_col=randint(50,200)
+            temp_col2=randint(50,200)
+            temp_col3=randint(50,200)
+            pen = pg.mkPen(color=(temp_col, temp_col2, temp_col3))
             self.graphWidget.plot(zmienna_x,zmienna_y,pen=pen,symbol='+')
         # print("rzeczy ",routes[0].koordynat_x,routes[0].koordynat_y)
         print(rutes)
@@ -382,7 +451,9 @@ class MainWindow(QMainWindow):
         #self.get_data_from_user.setEnabled(False)
 
     def read_data_from_csv_button_clicked(self):
-        print(blabla[0],blabla[1],blabla[2])
+        self.w3=GetDataFromExcell()
+        self.w3.show()
+        #print(blabla[0],blabla[1],blabla[2])
         self.read_data_from_csv.setEnabled(False)
 
     def show_graphs_and_values_button_clicked(self):
@@ -391,7 +462,8 @@ class MainWindow(QMainWindow):
         self.w1.show()
 
     def export_data_to_csv_button_clicked(self):
-        self.export_data_to_csv.setEnabled(False)
+        self.w4=ExportDataToExcell()
+        self.w4.show()
 
 
 
