@@ -8,6 +8,7 @@ import sys
 from pyqtgraph import PlotWidget,plot
 import pyqtgraph as pg
 from initsolution import initsolution
+from Perturbation_Procedure import pert_proc
 import time
 from random import randint
 
@@ -39,6 +40,7 @@ class Node():
 wezly = []
 blabla = []
 routes =[]
+stack =[0]
 
 class GetDataFromUserWindow(QWidget):
     def __init__(self):
@@ -94,7 +96,8 @@ class ExportDataToExcell(QWidget):
 
         slownik={'Capacity':[capacity],'Available':[available],'Time':[time],'Zapotrzebowanie':[Zapotrzebowanie],'Czas Obslugi':[Czas_Obsługi],'Okno czasowe min':[Okno_czasowe_min],'Okno czasowe max':[Okno_czasowe_max],'Koordynaty x':[Koordynaty_x],'Koordynaty y':[Koordynaty_y],'Poprzednik AND':[Poprzednik_And],'Poprzednik OR':[Poprzednik_Or]}
         df=pd.DataFrame(slownik)
-        df.to_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/exportowane.xlsx', sheet_name='Dane eksportowane')
+        excel_url='C:/Users/bilin/Desktop/magisterka s2/metody inżynierii systemów/projekt/MIS/program/exportowane.xlsx'
+        df.to_excel(excel_url, sheet_name='Dane eksportowane')
         
 
 class GetDataFromExcell(QWidget):
@@ -110,7 +113,7 @@ class GetDataFromExcell(QWidget):
         self.tekst.setFont(QFont('Arial', 13))
         self.tekst.move(300,100)
         self.tekst.adjustSize()
-        wb=pd.read_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/dane.xlsx')
+        wb=pd.read_excel('C:/Users/bilin/Desktop/magisterka s2/metody inżynierii systemów/projekt/MIS/program/dane.xlsx')
 
         Capacity=int(wb.at[0,'Capacity'])
         Available=int(wb.at[0,'Available'])
@@ -135,14 +138,14 @@ class GetDataFromExcell(QWidget):
             # Poprzednik_And.append(wb.at[x,'Poprzednik AND'])
             
             # Poprzednik_Or.append(wb.at[x,'Poprzednik OR'])
-            wezly.append(Node(int(wb.at[x,'Zapotrzebowanie']),int(wb.at[x,'Czas Obslugi']),int(wb.at[x,'Okno czasowe min']),int(wb.at[x,'Okno czasowe max']),int(wb.at[x,'Koordynaty x']),int(wb.at[x,'Koordynaty y']),str(wb.at[x,'Poprzednik AND']),str(wb.at[x,'Poprzednik OR'])))
+            wezly.append(Node(float(wb.at[x,'Zapotrzebowanie']),float(wb.at[x,'Czas Obslugi']),float(wb.at[x,'Okno czasowe min']),float(wb.at[x,'Okno czasowe max']),float(wb.at[x,'Koordynaty x']),float(wb.at[x,'Koordynaty y']),str(wb.at[x,'Poprzednik AND']),str(wb.at[x,'Poprzednik OR'])))
             if wezly[x].ANDpre =="nan":
                 wezly[x].ANDpre=""
             if wezly[x].ORpre=="nan":
                 wezly[x].ORpre=""
 
             #self.obiekt1=Node(Zapotrzebowanie,Czas_Obsługi,Okno_czasowe_min,Okno_czasowe_max,Koordynaty_x,Koordynaty_y, Poprzednik_And, Poprzednik_Or )
-        print(wezly[0].ANDpre)
+        print("and",wezly[1].ANDpre)
     
 class EnterDataWindow(QMainWindow):
     def __init__(self):
@@ -441,6 +444,12 @@ class MainWindow(QMainWindow):
         #self.start_simulation_button.setEnabled(False)
         routes.append(initsolution(wezly,blabla))
         
+        temp_pert=pert_proc(routes[0],blabla)
+        
+        
+        # stack=temp_pert[1]
+        print("routessss",temp_pert[0])
+        print("stackkkk",temp_pert[1])
         print(routes[0])
 
     def get_data_from_user_button_clicked(self):
