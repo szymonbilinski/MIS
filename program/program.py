@@ -11,7 +11,7 @@ from initsolution import initsolution
 from Perturbation_Procedure import pert_proc
 import time
 from random import randint
-
+from export_wyniku import ex_wyniku
 
 
 # capacity=None
@@ -444,12 +444,14 @@ class MainWindow(QMainWindow):
         #self.start_simulation_button.setEnabled(False)
         routes.append(initsolution(wezly,blabla))
         
-        temp_pert=pert_proc(routes[0],blabla)
+        ex_wyniku(routes[0])
+
+        # temp_pert=pert_proc(routes[0],blabla)
         
         
         # stack=temp_pert[1]
-        print("routessss",temp_pert[0])
-        print("stackkkk",temp_pert[1])
+        # print("routessss",temp_pert[0])
+        # print("stackkkk",temp_pert[1])
         print(routes[0])
 
     def get_data_from_user_button_clicked(self):
