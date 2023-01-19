@@ -7,6 +7,7 @@ def pert_proc(routes,blabla):
     print("P_P")
     #koszt start
     cost=[]
+    print("pert routes",routes)
     cost_temp=[]
     for k in range(len(routes)):
         cost_temp.append(0)
@@ -15,9 +16,10 @@ def pert_proc(routes,blabla):
         # print("cost temp",cost_temp)    
 
     for k in range(len(routes)):
+        
         cost.append(math.sqrt(math.pow(0-routes[k][0].koordynat_x,2)+math.pow(0-routes[k][0].koordynat_y,2)))
         for n in range(len(routes[k])-1):
-            # print(cost," ",k," ",n," ",(routes[k][n].koordynat_x)," ",(routes[k][n+1].koordynat_x)," ",(routes[k][n].koordynat_y)," ",(routes[k][n+1].koordynat_y))
+            print(cost," ",k," ",n," ",(routes[k][n].koordynat_x)," ",(routes[k][n+1].koordynat_x)," ",(routes[k][n].koordynat_y)," ",(routes[k][n+1].koordynat_y))
             cost[k]+=math.sqrt(math.pow(routes[k][n].koordynat_x-routes[k][n+1].koordynat_x,2)+math.pow(routes[k][n].koordynat_y-routes[k][n+1].koordynat_y,2))
         # print("cost1231",cost)
         cost[k]+=cost_temp[k]

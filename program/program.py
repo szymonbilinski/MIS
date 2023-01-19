@@ -43,7 +43,7 @@ class Node():
 
 wezly = []
 blabla = []
-
+routes_koncowy=[]
 
 class GetDataFromUserWindow(QWidget):
     def __init__(self):
@@ -99,7 +99,7 @@ class ExportDataToExcell(QWidget):
 
         slownik={'Capacity':[capacity],'Available':[available],'Time':[time],'Zapotrzebowanie':[Zapotrzebowanie],'Czas Obslugi':[Czas_Obsługi],'Okno czasowe min':[Okno_czasowe_min],'Okno czasowe max':[Okno_czasowe_max],'Koordynaty x':[Koordynaty_x],'Koordynaty y':[Koordynaty_y],'Poprzednik AND':[Poprzednik_And],'Poprzednik OR':[Poprzednik_Or]}
         df=pd.DataFrame(slownik)
-        excel_url='C:/Users/bilin/Desktop/magisterka s2/metody inżynierii systemów/projekt/MIS/program/exportowane.xlsx'
+        excel_url='exportowane.xlsx'
         df.to_excel(excel_url, sheet_name='Dane eksportowane')
         
 
@@ -116,7 +116,7 @@ class GetDataFromExcell(QWidget):
         self.tekst.setFont(QFont('Arial', 13))
         self.tekst.move(300,100)
         self.tekst.adjustSize()
-        wb=pd.read_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/dane.xlsx')
+        wb=pd.read_excel('dane.xlsx')
     
         Capacity=int(wb.at[0,'Capacity'])
         Available=int(wb.at[0,'Available'])
@@ -380,7 +380,7 @@ class ShowGraph(QMainWindow):
         self.graphWidget = pg.PlotWidget()
         self.setCentralWidget(self.graphWidget)
         rutes=[]
-        rutes=routes[0]
+        rutes=routes_koncowy[0]
         #self.graphWidget.setBackground('w')
 
         for i in range(len(rutes)):
@@ -447,42 +447,79 @@ class MainWindow(QMainWindow):
         #self.start_simulation_button.setEnabled(False)
         routes =[]
         stack =[]
-        routes.append(initsolution(wezly,blabla))
+        temp_routes=[]
+        temp_routes.append(initsolution(wezly,blabla))
+        routes=temp_routes[0].copy()
+        # routes_koncowy.append(routes.copy())
+        # self.w69=ShowGraph()
+        # self.w69.show()
+        # routes.clear()
+        # temp_pert=pert_proc(routes[0],blabla)
         
-        temp_pert=pert_proc(routes[0],blabla)
-        
-        LocalSearch1=localsearchF(temp_pert,blabla)
-        print("routes",LocalSearch1[0])
-        print("stack",LocalSearch1[1])
-        print("cost",LocalSearch1[2])
+        # LocalSearch1=localsearchF(temp_pert,blabla)
+        # print("routes",LocalSearch1[0])
+        # print("stack",LocalSearch1[1])
+        # print("cost",LocalSearch1[2])
         # stack=temp_pert[1]
         #print("routessss",temp_pert[0])
         #print("stackkkk",temp_pert[1])
         #print(routes[0])
-        Max_iter=2
-        S_best=calculate_solution(routes[0])    #do tej zmiennej ma isc najlepsze teraz rozwiazanie
-        New_S_best=calculate_solution(routes[0]) #do tej zmiennej nowe rozwiazanie ma isc 
+        Max_iter=120
+        S_best=calculate_solution(routes)    #do tej zmiennej ma isc najlepsze teraz rozwiazanie
+        New_S_best=calculate_solution(routes) #do tej zmiennej nowe rozwiazanie ma isc 
         iter=1
         while(iter<Max_iter):
-            temp_pert=pert_proc(routes[0],blabla)
+            temp_pert=pert_proc(routes,blabla)
             routes.clear()
             stack.clear()
-            routes=temp_pert[0].copy()
-            stack=temp_pert[1].copy()
+            
             # print("routessss",routes)
             # print("stackkkk",stack)
-            #localsearch
+            LocalSearch1=localsearchF(temp_pert,blabla,S_best)
+            if(len(LocalSearch1)==3):
+                routes=LocalSearch1[0].copy()
+                stack=LocalSearch1[2].copy()
+                New_S_best=LocalSearch1[1]
+                print("routes",LocalSearch1[0])
+                print("stack",LocalSearch1[2])
+            else:
+                routes=LocalSearch1[0].copy()
+                New_S_best=LocalSearch1[1]
+                print("routes",LocalSearch1[0])
+                # print("stack",LocalSearch1[2])
+            # print("cost",LocalSearch1[1])
+            print("len stack",len(stack))
             if(len(stack)>0):
-                if(blabla[1]<len(routes)):
-                    routes.append(stack)
+                print("nbveh",blabla[1])
+                print("lenroutes",len(routes))
+                if(blabla[1]>len(routes)):
+                    print("staczek",stack)
+                    
+                    routes.append(stack.copy())
+                    
+                    print("roteeeeeeee",routes)
                     stack.clear()
-                    #local search
+                    print("routesssssewaew",routes)
+                    print("staczek2222",stack)
+                    temp_pert.clear()
+                    temp_pert=[routes,stack]
+                    print("tempeprokeappr",temp_pert)
+                    LocalSearch1=localsearchF(temp_pert,blabla,S_best)
+                    if(len(LocalSearch1)==3):
+                        routes=LocalSearch1[0].copy()
+                        stack=LocalSearch1[2].copy()
+                        New_S_best=LocalSearch1[1]
+                    else:
+                        routes=LocalSearch1[0].copy()
+                        New_S_best=LocalSearch1[1]
+                    print("routessssssssssssssssssssssss ",iter,routes)
                 else:
                     temp_pert=pert_proc(routes,blabla)
                     routes.clear()
                     stack.clear()
                     routes=temp_pert[0].copy()
                     stack=temp_pert[1].copy()
+                    print("routessssssssssssssssssssssssss ",iter,routes)
 
             if(S_best>New_S_best):
                 S_best=New_S_best
@@ -490,9 +527,10 @@ class MainWindow(QMainWindow):
         # stack=temp_pert[1]
         # print("routessss",temp_pert[0])
         # print("stackkkk",temp_pert[1])
-        print(routes)
+        # print(routes)
         #export wynikow
-        # ex_wyniku(routes[0])              #do odkomentowania i wrzucenia wynikow wszystich
+        routes_koncowy.append(routes)
+        ex_wyniku(routes,S_best)              #do odkomentowania i wrzucenia wynikow wszystich
 
     def get_data_from_user_button_clicked(self):
         self.w1=EnterDataWindow()

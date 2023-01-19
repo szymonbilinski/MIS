@@ -27,6 +27,7 @@ def ForwardOrBackwardWithinVehicle(routes):
 def TransferringAcrossVehicles(routes):
     trasy1=routes
     lengthL=len(trasy1)
+    print("lengthL",lengthL)
     for i in range(0,lengthL-1):
         if lengthL==1:
             break
@@ -34,7 +35,9 @@ def TransferringAcrossVehicles(routes):
             break
         lengthW=len(trasy1[i])
         lengthW1=len(trasy1[i+1])
+        print(trasy1[i+1])
         losowy=randint(0,lengthW-1)
+        print("rand int val",lengthW1-1)
         losowy2=randint(0,lengthW1-1)
         zmienna=trasy1[i][losowy]
         trasy1[i][losowy]=trasy1[i+1][losowy2]
@@ -69,9 +72,12 @@ def ExchangeAcrossVehicles(routes):
             break
         lengthW=len(trasy3[i])
         lengthW1=len(trasy3[i+1])
-        losowy=randint(0,lengthW-1)
-        if losowy > lengthW1:
-            losowy=lengthW1
+        
+        # losowy2=randint(0,lengthW1-1)
+        if lengthW > lengthW1:
+            losowy=randint(0,lengthW1-1)
+        else:
+            losowy=randint(0,lengthW-1)
         zmienna=trasy3[i][losowy]
         trasy3[i][losowy]=trasy3[i+1][losowy]
         trasy3[i+1][losowy]=zmienna
@@ -105,7 +111,8 @@ def feasibility(x,blabla,q):
         return True
     
 
-def localsearchF(temp_pert,blabla):
+def localsearchF(temp_pert,blabla,dziwnykoszt):
+    stackkk=[]
     CurrentSolution=100
     NewSolution=0
     routes=temp_pert[0]
@@ -113,6 +120,7 @@ def localsearchF(temp_pert,blabla):
     iterNotImp=1
     TrialStack=[]
     final_list=[]
+    final_koszt=dziwnykoszt
     MaxNotImp=50 #ilość powtórzeń bez ulepszeń
 #MaxIter=600 
     Temp=100 #dana z artykułu
@@ -221,7 +229,10 @@ def localsearchF(temp_pert,blabla):
             #Temp=alfa*Temp
     #temp_pert[0]=routes
     #temp_pert[1]=stack
-    return([routes, stackkk, final_koszt])
+    if(stackkk!=[]):
+        return([routes, final_koszt, stackkk])
+    else:
+        return([routes,final_koszt])
 
 
 
