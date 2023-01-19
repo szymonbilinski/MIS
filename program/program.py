@@ -12,11 +12,14 @@ from Perturbation_Procedure import pert_proc
 import time
 from random import randint
 from export_wyniku import ex_wyniku
-
+from calc_solution import calculate_solution
 
 # capacity=None
 # available=None
 # time=None
+
+
+
 
 class costam():
     def __init__(self,capacity,available,time):
@@ -39,8 +42,7 @@ class Node():
 
 wezly = []
 blabla = []
-routes =[]
-stack =[0]
+
 
 class GetDataFromUserWindow(QWidget):
     def __init__(self):
@@ -442,17 +444,43 @@ class MainWindow(QMainWindow):
 
     def start_simulation_button_clicked(self):
         #self.start_simulation_button.setEnabled(False)
+        routes =[]
+        stack =[]
         routes.append(initsolution(wezly,blabla))
-        
-        ex_wyniku(routes[0])
+        Max_iter=2
+        S_best=calculate_solution(routes[0])    #do tej zmiennej ma isc najlepsze teraz rozwiazanie
+        New_S_best=calculate_solution(routes[0]) #do tej zmiennej nowe rozwiazanie ma isc 
+        iter=1
+        while(iter<Max_iter):
+            temp_pert=pert_proc(routes[0],blabla)
+            routes.clear()
+            stack.clear()
+            routes=temp_pert[0].copy()
+            stack=temp_pert[1].copy()
+            # print("routessss",routes)
+            # print("stackkkk",stack)
+            #localsearch
+            if(len(stack)>0):
+                if(blabla[1]<len(routes)):
+                    routes.append(stack)
+                    stack.clear()
+                    #local search
+                else:
+                    temp_pert=pert_proc(routes,blabla)
+                    routes.clear()
+                    stack.clear()
+                    routes=temp_pert[0].copy()
+                    stack=temp_pert[1].copy()
 
-        # temp_pert=pert_proc(routes[0],blabla)
-        
-        
+            if(S_best>New_S_best):
+                S_best=New_S_best
+            iter+=1
         # stack=temp_pert[1]
         # print("routessss",temp_pert[0])
         # print("stackkkk",temp_pert[1])
-        print(routes[0])
+        print(routes)
+        #export wynikow
+        # ex_wyniku(routes[0])              #do odkomentowania i wrzucenia wynikow wszystich
 
     def get_data_from_user_button_clicked(self):
         self.w1=EnterDataWindow()

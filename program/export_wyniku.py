@@ -27,7 +27,7 @@ def ex_wyniku(routes):
           'laczny czas':laczny_czas,
           'zapotrzebowanie':laczne_zapotrzebowanie
           }
-    print(data)
+    # print(data)
     
     df=pd.DataFrame(data)
     df1=pd.DataFrame(data1,index=[0])
