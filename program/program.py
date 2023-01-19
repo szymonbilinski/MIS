@@ -9,6 +9,7 @@ from pyqtgraph import PlotWidget,plot
 import pyqtgraph as pg
 from initsolution import initsolution
 from Perturbation_Procedure import pert_proc
+from LocalSearch import localsearchF
 import time
 from random import randint
 
@@ -113,8 +114,8 @@ class GetDataFromExcell(QWidget):
         self.tekst.setFont(QFont('Arial', 13))
         self.tekst.move(300,100)
         self.tekst.adjustSize()
-        wb=pd.read_excel('C:/Users/bilin/Desktop/magisterka s2/metody inżynierii systemów/projekt/MIS/program/dane.xlsx')
-
+        wb=pd.read_excel('C:/Users/Uzytkownik/Desktop/MIS/MIS/program/dane.xlsx')
+    
         Capacity=int(wb.at[0,'Capacity'])
         Available=int(wb.at[0,'Available'])
         Time=int(wb.at[0,'Time'])
@@ -446,11 +447,14 @@ class MainWindow(QMainWindow):
         
         temp_pert=pert_proc(routes[0],blabla)
         
-        
+        LocalSearch1=localsearchF(temp_pert,blabla)
+        print("routes",LocalSearch1[0])
+        print("stack",LocalSearch1[1])
+        print("cost",LocalSearch1[2])
         # stack=temp_pert[1]
-        print("routessss",temp_pert[0])
-        print("stackkkk",temp_pert[1])
-        print(routes[0])
+        #print("routessss",temp_pert[0])
+        #print("stackkkk",temp_pert[1])
+        #print(routes[0])
 
     def get_data_from_user_button_clicked(self):
         self.w1=EnterDataWindow()
